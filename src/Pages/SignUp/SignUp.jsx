@@ -32,13 +32,13 @@ const SignUp = () => {
 
       
             Swal.fire({
-              title: "Sweet!",
-              text: "User Created Successfully.",
-              imageUrl: "https://unsplash.it/400/200",
-              imageWidth: 400,
-              imageHeight: 200,
-              imageAlt: "Custom image"
+              position: "top-end",
+              icon: "success",
+              title: "User created successfully",
+              showConfirmButton: false,
+              timer: 1500
             });
+
             navigate('/');
           })
           .catch(error => console.log(error))

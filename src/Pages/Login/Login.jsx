@@ -7,12 +7,13 @@ import Swal from 'sweetalert2'
 
 
 const Login = () => {
-  
+
     const [disabled, setDisabled] = useState(true);
     const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+    console.log('state in the location',location.state)
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -25,8 +26,8 @@ const Login = () => {
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email,password)
-    
+        console.log(email, password)
+
         signIn(email, password)
             .then(result => {
                 const user = result.user;
@@ -34,21 +35,21 @@ const Login = () => {
                 Swal.fire({
                     title: "Custom animation with Animate.css",
                     showClass: {
-                      popup: `
+                        popup: `
                         animate__animated
                         animate__fadeInUp
                         animate__faster
                       `
                     },
                     hideClass: {
-                      popup: `
+                        popup: `
                         animate__animated
                         animate__fadeOutDown
                         animate__faster
                       `
                     }
-                  });
-                  navigate(from,{replace:true});
+                });
+                navigate(from, { replace: true });
             })
     }
 
@@ -100,13 +101,14 @@ const Login = () => {
 
                                     <LoadCanvasTemplate />
                                 </label>
-                                <input onBlur={handleValidateCaptcha} type="text"  name="captcha" placeholder="type the captcha above" className="input input-bordered"/>
+                                <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type the captcha above" className="input input-bordered" />
                                 {/* <button className='btn btn-outline btn-xs mt-4'>Validate</button> */}
 
                             </div>
                             <div className="form-control mt-6">
+                                {/* To Do  disabled*/ }
 
-                                <input disabled={disabled} className="btn btn-primary" type="submit" value="Login" />
+                                <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
                             </div>
                         </form>
                         <p><small>New Here ? <Link to="/signup">Create an account</Link></small></p>
