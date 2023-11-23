@@ -3,10 +3,15 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import SocialLogin from '../../Components/SocialLogin/SocialLogin';
+import UseAxiosPublic from '../../hooks/UseAxiosPublic';
 
 //photo url : https://i.ibb.co/F3Dh9MS/grow-your-youtube-channel-business-web-banner-template-design-691378-92.jpg
 const SignUp = () => {
+  const axiosPublic = UseAxiosPublic();
+
 
   const {
     register,
@@ -27,19 +32,33 @@ const SignUp = () => {
         console.log(loggedUser)
         updateProfile(data.name, data.photoURL)
           .then(() => {
-            console.log('user profile info updated')
-            reset();
+            // create user entry in the database
+            const userInfo = {
+              name: data.name,
+              email: data.email
+            }
+            axiosPublic.post('/users', userInfo)
+              .then(res => {
+                if (res.data.insertedId) {
+                  console.log('user added to database')
+                  reset();
 
-      
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "User created successfully",
-              showConfirmButton: false,
-              timer: 1500
-            });
 
-            navigate('/');
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "User created successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+
+                  navigate('/');
+
+                }
+              })
+
+
+
           })
           .catch(error => console.log(error))
       })
@@ -103,9 +122,13 @@ const SignUp = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <input className='btn btn-primary' type="submit" value="Sign" />
+                <input className='btn btn-primary' type="submit" value="Sign Up" />
               </div>
             </form>
+            <p className='px-6'><small>Already Have an account
+              <Link to="/login">Login</Link>
+            </small></p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>
